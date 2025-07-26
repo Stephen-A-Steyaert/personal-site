@@ -17,9 +17,9 @@ This is the source code and infrastructure configuration for my personal resume 
 - **Image hosting**: [Docker Hub](https://hub.docker.com/)
 
 Planned domains:
-- Main site: `resume.steyaert.xyz`
-- Blog: `blog.resume.steyaert.xyz`
-- CDN: `cdn.resume.steyaert.xyz`
+- Main site: `resume.steyaert.xyz` or `resume.steyaert.dev`
+- Blog: `blog.steyaert.xyz` or `blog.steyaert.dev`
+- CDN: `cdn.steyaert.xyz` or `cdn.steyaert.dev`
 
 ---
 
@@ -46,7 +46,7 @@ docker service rollback resume_website
 
 ## Docker Image
 
-The Django app is built and pushed to Docker Hub (e.g. `steyaertc23/resume:latest`).  
+The Django app is built and pushed to Docker Hub (e.g. `steyaertc23/personal:latest`).  
 The production server pulls this image as defined in `docker-compose.yml`.
 
 ---
