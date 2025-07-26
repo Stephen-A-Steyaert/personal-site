@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.sqlite3
+db.sqlite3
+*.log
+local_settings.py
+.env
+*.env
+
+# Migrations (optional, ignore if auto-generated only)
+# Comment this out if you want to keep migrations under version control
+# **/migrations/*.py
+# **/migrations/*.pyc
+# **/migrations/__pycache__/
+
+# Static + media (optional)
+media/
+staticfiles/  # For collectstatic output
+assets/       # If you build frontend assets
+
+# Testing / coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+.noseids
+pytest_cache/
+junit.xml
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+
+# IDEs/editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Git-specific
+*.orig
+
+# Nginx Config
+nginx
+
+# Doxygen Documentation
+Doxyfile-local
+docs/html
