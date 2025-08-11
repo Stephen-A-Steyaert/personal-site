@@ -1,16 +1,8 @@
-"""
-ASGI config for personal_site project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
-"""
-
-import os
+from os import environ
 
 from django.core.asgi import get_asgi_application
+from django.core.handlers.asgi import ASGIHandler
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'personal_site.settings')
+environ.setdefault("DJANGO_SETTINGS_MODULE", "personal_site.settings")
 
-application = get_asgi_application()
+application: ASGIHandler = get_asgi_application()

@@ -1,7 +1,7 @@
 [project]
-name = "resume-site"
+name = "Personal-Site"
 version = "0.1.0"
-description = "Resume Site for Stephen Steyaert"
+description = "Personal Site of Stephen Steyaert"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -21,11 +21,7 @@ dev = [
     "pytest-xdist>=3.8.0",
     "python-dotenv>=1.1.1",
 ]
-docs = [
-    "sphinx>=8.1.3",
-    "sphinx-autobuild>=2024.10.3",
-    "sphinx-rtd-theme>=3.0.2",
-]
+
 prod = [
     "gunicorn>=23.0.0",
 ]

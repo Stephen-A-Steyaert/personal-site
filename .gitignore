@@ -54,6 +54,5 @@ Thumbs.db
 # Nginx Config
 nginx
 
-# Doxygen Documentation
-Doxyfile-local
-docs/html
+# future things
+future

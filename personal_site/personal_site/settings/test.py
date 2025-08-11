@@ -1,8 +1,7 @@
 from .dev import *
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
-}
+DATABASES["default"]["NAME"] = ":memory:"
+DATABASES["default"]["USER"] = None
+DATABASES["default"]["PASSWORD"] = None
+DATABASES["default"]["HOST"] = None
+DATABASES["default"]["PORT"] = None

@@ -1,0 +1,101 @@
+version: "3.8"
+
+# Base domain steyaert.xyz || steyaert.dev, havent decided yet
+
+services:
+
+  traefik:
+    image: traefik:v3.0
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/traefik_dynamic.yml:/etc/traefik/traefik_dynamic.yml:ro
+      - ./traefik/acme.json:/acme.json
+    networks:
+      - resume_net
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.role == manager
+
+  website:
+    image: steyaertc23/personal:latest
+    depends_on:
+      - db
+      - nginx_static
+    env_file:
+      - .env.prod
+    networks:
+      - resume_net
+    deploy:
+      restart_policy:
+        condition: any
+      replicas: 1
+      labels:
+        traefik.enable: "true"
+
+        # Main app: resume.basedomain
+        traefik.http.routers.hello.rule: "Host(`resume.basedomain`)"
+        traefik.http.routers.hello.entrypoints: "websecure"
+        traefik.http.routers.hello.tls.certresolver: "letsencrypt"
+        traefik.http.routers.hello.middlewares: "secureHeaders@file"
+
+        # Blog sub-subdomain: blog.basedomain
+        traefik.http.routers.blog.rule: "Host(`blog.basedomain`)"
+        traefik.http.routers.blog.entrypoints: "websecure"
+        traefik.http.routers.blog.tls.certresolver: "letsencrypt"
+        traefik.http.routers.blog.middlewares: "secureHeaders@file"
+
+        # Blog sub-subdomain: www.basedomain
+        traefik.http.routers.www.rule: "Host(`www.basedomain`)"
+        traefik.http.routers.www.entrypoints: "websecure"
+        traefik.http.routers.www.tls.certresolver: "letsencrypt"
+        traefik.http.routers.www.middlewares: "secureHeaders@file"
+
+  nginx_static:
+    image: nginx:alpine
+    volumes:
+      - ./staticfiles:/usr/share/nginx/html:ro  # <-- Mount collected static files here
+      - ./nginx/static.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - resume_net
+    deploy:
+      restart_policy:
+        condition: any
+      replicas: 1
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.cdn.rule: "Host(`cdn.basedomain`)"
+        traefik.http.routers.cdn.entrypoints: "websecure"
+        traefik.http.routers.cdn.tls.certresolver: "letsencrypt"
+        traefik.http.routers.cdn.middlewares: "secureHeaders@file"
+
+  db:
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - resume_net
+    env_file:
+      - .env.prod
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      restart_policy:
+        condition: any
+      replicas: 1
+
+networks:
+  resume_net:
+    driver: overlay
+
+volumes:
+  postgres_data:
